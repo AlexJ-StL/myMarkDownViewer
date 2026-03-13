@@ -20,7 +20,9 @@ impl MdViewer {
         egui_extras::install_image_loaders(&cc.egui_ctx);
 
         let mut app = Self {
-            markdown_text: String::from("# Welcome to MdViewer\n\nClick **Open File...** to load a Markdown file."),
+            markdown_text: String::from(
+                "# Welcome to MdViewer\n\nClick **Open File...** to load a Markdown file.",
+            ),
             file_path: None,
             base_dir: None,
             cache: CommonMarkCache::default(),
@@ -65,30 +67,31 @@ impl MdViewer {
 
         let base_dir_str = base_dir.to_string_lossy().replace('\\', "/");
         let mut result = self.markdown_text.clone();
-        
+
         // Simple regex-like replacement for Markdown images: ![alt](path)
         // We look for patterns like ](path) and check if 'path' is relative.
         // This is a heuristic but matches the User's example: ![image.png](Figures/34b630e8-8a21-4e1c-8cbe-7987eb66f07e.png)
-        
+
         let mut offset = 0;
         let original = self.markdown_text.clone();
-        
+
         // Find all occurrences of "]( "
         for (start_match, _) in original.match_indices("](") {
             let path_start = start_match + 2;
             if let Some(path_end) = original[path_start..].find(')') {
                 let path_end = path_start + path_end;
                 let path = &original[path_start..path_end];
-                
+
                 // If it's not a URL and not absolute
                 if !path.starts_with("http") && !Path::new(path).is_absolute() {
                     let absolute_path = format!("file:///{}/{}", base_dir_str, path);
-                    result.replace_range((path_start + offset)..(path_end + offset), &absolute_path);
+                    result
+                        .replace_range((path_start + offset)..(path_end + offset), &absolute_path);
                     offset += absolute_path.len() - path.len();
                 }
             }
         }
-        
+
         result
     }
 }
@@ -110,11 +113,8 @@ impl eframe::App for MdViewer {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             egui::ScrollArea::vertical().show(ui, |ui| {
-                CommonMarkViewer::new().show(
-                    ui,
-                    &mut self.cache,
-                    &self.processed_markdown(),
-                );
+                let markdown = self.processed_markdown();
+                CommonMarkViewer::new().show(ui, &mut self.cache, &markdown);
             });
         });
     }
