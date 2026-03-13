@@ -18,7 +18,7 @@ A high-performance, memory-efficient Markdown viewer for Windows, Linux, and mac
 ### Build from Source
 
 ```bash
-git clone https://github.com/[your-username]/myMarkDownViewer.git
+git clone https://github.com/AlexJ-StL/myMarkDownViewer.git
 cd myMarkDownViewer
 cargo build --release
 ```

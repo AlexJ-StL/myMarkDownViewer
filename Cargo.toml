@@ -6,6 +6,8 @@ edition = "2024"
 [dependencies]
 eframe = "0.33.3"
 egui_commonmark = "0.22.0"
+egui_extras = { version = "0.33.3", features = ["image"] }
+image = { version = "0.25.10", features = ["png", "jpeg"] }
 rfd = "0.17.2"
 
 [profile.release]
