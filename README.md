@@ -23,7 +23,12 @@ cd myMarkDownViewer
 cargo build --release
 ```
 
-The optimized binary will be located at `target/release/md_viewer`.
+To install the viewer globally so you can use the `md_viewer` command from anywhere on your system:
+```bash
+cargo install --path .
+```
+
+If you don't install it globally, the optimized binary is located locally at `target/release/md_viewer.exe`.
 
 ## Usage
 
