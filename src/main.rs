@@ -19,6 +19,26 @@ impl MdViewer {
         // Install image loaders
         egui_extras::install_image_loaders(&cc.egui_ctx);
 
+        // Customize Fonts and Text Sizes
+        let mut style = (*cc.egui_ctx.style()).clone();
+        
+        // Redefine text styles for better readability (larger fonts)
+        use egui::{FontFamily, FontId, TextStyle};
+        style.text_styles = [
+            (TextStyle::Heading, FontId::new(32.0, FontFamily::Proportional)),
+            (TextStyle::Name("Heading2".into()), FontId::new(26.0, FontFamily::Proportional)),
+            (TextStyle::Name("Heading3".into()), FontId::new(22.0, FontFamily::Proportional)),
+            (TextStyle::Body, FontId::new(18.0, FontFamily::Proportional)),
+            (TextStyle::Monospace, FontId::new(16.0, FontFamily::Monospace)),
+            (TextStyle::Button, FontId::new(18.0, FontFamily::Proportional)),
+            (TextStyle::Small, FontId::new(14.0, FontFamily::Proportional)),
+        ].into();
+        
+        // Optional: Increase spacing between elements for breathing room
+        style.spacing.item_spacing = egui::vec2(10.0, 10.0);
+        
+        cc.egui_ctx.set_style(style);
+
         let mut app = Self {
             markdown_text: String::from(
                 "# Welcome to MdViewer\n\nClick **Open File...** to load a Markdown file.",
